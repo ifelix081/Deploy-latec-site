@@ -41,10 +41,12 @@ let souDiretoria = false;
   await carregarMembros();
 })();
 
+const FOTO_PADRAO_MEM = 'https://api.dicebear.com/7.x/initials/svg?seed=';
+
 async function carregarMembros() {
   const { data: membros, error } = await supabaseClient
     .from('membros')
-    .select('id, nome_completo, email, cargo, status')
+    .select('id, nome_completo, email, cargo, status, nickname, foto_url')
     .order('nome_completo');
 
   const tbody = document.getElementById('lista-membros');
@@ -70,10 +72,12 @@ async function carregarMembros() {
 }
 
 function linhaMembro(m) {
+  const foto = m.foto_url || (FOTO_PADRAO_MEM + encodeURIComponent(m.nome_completo));
+
   if (!souDiretoria) {
     return `
       <tr>
-        <td>${escapeHtml(m.nome_completo)}</td>
+        <td><img src="${foto}" class="avatar-pequeno" alt="" />${escapeHtml(m.nome_completo)}</td>
         <td>${escapeHtml(m.email)}</td>
         <td>${escapeHtml(m.cargo)}</td>
         <td><span class="badge badge-${m.status}">${m.status}</span></td>
@@ -84,7 +88,7 @@ function linhaMembro(m) {
 
   return `
     <tr>
-      <td>${escapeHtml(m.nome_completo)}</td>
+      <td><img src="${foto}" class="avatar-pequeno" alt="" />${escapeHtml(m.nome_completo)}</td>
       <td>${escapeHtml(m.email)}</td>
       <td>
         <select id="cargo-${m.id}">

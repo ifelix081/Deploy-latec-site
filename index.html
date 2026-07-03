@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deploy - Login</title>
-   <link rel="icon" type="image/webp" href="img/Deploy-D.webp">
+  <title>LATec FICR - Login</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 
   <div class="login-container">
     <div class="login-box">
-      <h1>Deploy - Liga Academica de Tecnologia FICR</h1>
-   <p class="subtitle" id="form-subtitle">Sistema de Gestão — entre com sua conta</p>
+      <h1>LATec FICR</h1>
+      <p class="subtitle" id="form-subtitle">Sistema de Gestão — entre com sua conta</p>
 
       <!-- FORM DE LOGIN -->
       <form id="form-login">
@@ -48,6 +47,14 @@
 
       <p class="error-msg" id="error-msg"></p>
       <p class="success-msg" id="success-msg"></p>
+
+      <div id="reenviar-container" style="display:none; text-align:center; margin-top:0.8rem;">
+        <button type="button" class="btn-secondary btn-small" style="width:auto;">Reenviar email de confirmação</button>
+      </div>
+
+      <p class="link-candidatura">
+        Ainda não é membro? <a href="candidatura.html">Candidate-se ao Processo Seletivo</a>
+      </p>
     </div>
   </div>
 
@@ -75,6 +82,7 @@
 
     formLogin.addEventListener('submit', (e) => {
       e.preventDefault();
+      document.getElementById('reenviar-container').style.display = 'none';
       const email = document.getElementById('login-email').value;
       const senha = document.getElementById('login-senha').value;
       fazerLogin(email, senha);

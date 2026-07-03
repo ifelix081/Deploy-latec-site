@@ -1,6 +1,7 @@
 const CARGOS_DIRETORIA_EV = ['Presidente', 'Co-Presidente', 'Secretário'];
 
 let souDiretoriaEventos = false;
+let meuMembroId = null;
 
 const TIPO_LABEL = {
   reuniao: 'Reunião',
@@ -16,11 +17,14 @@ const TIPO_LABEL = {
 
   const { data: meuRegistro } = await supabaseClient
     .from('membros')
-    .select('cargo')
+    .select('id, cargo')
     .eq('auth_id', session.user.id)
     .single();
 
-  souDiretoriaEventos = meuRegistro && CARGOS_DIRETORIA_EV.includes(meuRegistro.cargo);
+  if (meuRegistro) {
+    meuMembroId = meuRegistro.id;
+    souDiretoriaEventos = CARGOS_DIRETORIA_EV.includes(meuRegistro.cargo);
+  }
 
   if (souDiretoriaEventos) {
     document.getElementById('form-novo-evento').style.display = 'block';
@@ -66,6 +70,10 @@ function cardEvento(ev) {
       </div>
       <p class="card-evento-data">${dataFormatada}${ev.local ? ' · ' + escapeHtmlEv(ev.local) : ''}</p>
       ${ev.descricao ? `<p class="card-evento-desc">${escapeHtmlEv(ev.descricao)}</p>` : ''}
+      <div class="comentarios-wrap">
+        <button class="comentarios-toggle" onclick="toggleComentarios('coment-evento-${ev.id}', 'evento', '${ev.id}')">💬 Comentários</button>
+        <div id="coment-evento-${ev.id}" style="display:none;"></div>
+      </div>
     </div>
   `;
 }

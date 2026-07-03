@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LATec FICR - Processo Seletivo</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-box" style="max-width: 460px;">
+      <h1>Processo Seletivo</h1>
+      <p class="subtitle">LATec FICR — Edital Nº 01/2026</p>
+
+      <div id="form-candidatura">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" id="c-nome" />
+        </div>
+        <div class="form-group">
+          <label>Email institucional</label>
+          <input type="email" id="c-email" placeholder="seuemail@a.ficr.edu.br" />
+        </div>
+        <div class="form-group">
+          <label>Curso</label>
+          <input type="text" id="c-curso" placeholder="Ex: ADS, Sistemas para Internet" />
+        </div>
+        <div class="form-group">
+          <label>Período</label>
+          <input type="text" id="c-periodo" placeholder="Ex: 1º semestre" />
+        </div>
+        <div class="form-group">
+          <label>Telefone</label>
+          <input type="text" id="c-telefone" />
+        </div>
+        <div class="form-group">
+          <label>Área de interesse</label>
+          <select id="c-area">
+            <option value="Projetos">Projetos</option>
+            <option value="Comunicação e Marketing">Comunicação e Marketing</option>
+            <option value="Eventos">Eventos</option>
+            <option value="Finanças">Finanças</option>
+            <option value="Ainda não sei">Ainda não sei</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Por que você quer entrar na LATec?</label>
+          <textarea id="c-motivacao" rows="4" style="width:100%; padding:0.65rem 0.8rem; border:1px solid var(--line); border-radius:3px; font-size:0.9rem;"></textarea>
+        </div>
+
+        <button id="btn-candidatar" class="btn-primary">Enviar candidatura</button>
+        <p id="erro-candidatura" class="error-msg"></p>
+        <p id="sucesso-candidatura" class="success-msg"></p>
+
+        <p class="link-candidatura">
+          Já é membro? <a href="index.html">Entrar no sistema</a>
+        </p>
+      </div>
+
+      <div id="confirmacao" style="display:none; text-align:center;">
+        <p style="font-size:1rem; margin-bottom:0.5rem;">✓ Candidatura enviada!</p>
+        <p style="color:var(--ink-soft); font-size:0.88rem;">A Diretoria da LATec vai avaliar sua inscrição e entrar em contato.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script>
+    document.getElementById('btn-candidatar').addEventListener('click', async () => {
+      const nome = document.getElementById('c-nome').value.trim();
+      const email = document.getElementById('c-email').value.trim();
+      const curso = document.getElementById('c-curso').value.trim();
+      const periodo = document.getElementById('c-periodo').value.trim();
+      const telefone = document.getElementById('c-telefone').value.trim();
+      const area = document.getElementById('c-area').value;
+      const motivacao = document.getElementById('c-motivacao').value.trim();
+
+      const erroEl = document.getElementById('erro-candidatura');
+      erroEl.style.display = 'none';
+
+      if (!nome || !email) {
+        erroEl.textContent = 'Preencha pelo menos nome e email.';
+        erroEl.style.display = 'block';
+        return;
+      }
+
+      const { error } = await supabaseClient.from('candidaturas').insert({
+        nome_completo: nome,
+        email,
+        curso: curso || null,
+        periodo: periodo || null,
+        telefone: telefone || null,
+        area_interesse: area,
+        motivacao: motivacao || null,
+      });
+
+      if (error) {
+        erroEl.textContent = `Erro ao enviar: ${error.message}`;
+        erroEl.style.display = 'block';
+        return;
+      }
+
+      document.getElementById('form-candidatura').style.display = 'none';
+      document.getElementById('confirmacao').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

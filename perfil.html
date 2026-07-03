@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LATec FICR - Meu Perfil</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <h2>LATec FICR — Meu Perfil</h2>
+    <div>
+      <a href="dashboard.html" class="link-voltar">Voltar ao painel</a>
+      <button id="btn-logout">Sair</button>
+    </div>
+  </div>
+
+  <div class="container" style="max-width: 480px;">
+    <div class="card-form">
+
+      <div style="text-align:center; margin-bottom:1.2rem;">
+        <img id="preview-foto" src="" alt="Foto de perfil" class="avatar-grande" />
+        <div style="margin-top:0.8rem;">
+          <label for="input-foto" class="btn-secondary btn-small" style="display:inline-block; width:auto; cursor:pointer;">
+            Trocar foto
+          </label>
+          <input type="file" id="input-foto" accept="image/*" style="display:none;" />
+        </div>
+      </div>
+
+      <p class="label-campo">Nome completo</p>
+      <p id="perfil-nome" class="valor-readonly"></p>
+
+      <p class="label-campo">Email</p>
+      <p id="perfil-email" class="valor-readonly"></p>
+
+      <p class="label-campo">Cargo</p>
+      <p id="perfil-cargo" class="valor-readonly"></p>
+
+      <label class="label-campo" for="perfil-nick">Nick (como aparece pro grupo)</label>
+      <input type="text" id="perfil-nick" placeholder="Ex: Tavo, Vini, ..." />
+
+      <button id="btn-salvar-perfil" class="btn-primary btn-small" style="width:auto; margin-top:0.8rem;">Salvar</button>
+      <p id="msg-perfil" class="erro" style="display:none;"></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/perfil.js"></script>
+</body>
+</html>

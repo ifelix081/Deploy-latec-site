@@ -160,6 +160,25 @@ button.btn-secondary:hover {
   display: none;
 }
 
+.link-candidatura {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  margin-top: 1.3rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
+.link-candidatura a {
+  color: var(--signal);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link-candidatura a:hover {
+  text-decoration: underline;
+}
+
 /* ===== Topbar ===== */
 .topbar {
   background: var(--ink);
@@ -500,4 +519,115 @@ button.btn-secondary:hover {
   font-size: 0.78rem;
   color: var(--confirm);
   margin-top: 0.7rem;
+}
+
+/* ===== Perfil ===== */
+.avatar-grande {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--line);
+  background: var(--base);
+}
+
+.avatar-pequeno {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: var(--base);
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+.valor-readonly {
+  font-size: 0.9rem;
+  color: var(--ink);
+  padding: 0.5rem 0;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+/* ===== Comentários ===== */
+.comentarios-wrap {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--line);
+}
+
+.comentarios-toggle {
+  background: none;
+  border: none;
+  color: var(--signal);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  padding: 0;
+}
+
+.comentarios-lista {
+  margin: 0.7rem 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.comentario-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  position: relative;
+}
+
+.comentario-corpo {
+  flex: 1;
+}
+
+.comentario-autor {
+  font-weight: 600;
+  font-size: 0.82rem;
+  margin-right: 0.5rem;
+}
+
+.comentario-data {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+}
+
+.comentario-texto {
+  font-size: 0.85rem;
+  margin-top: 0.15rem;
+}
+
+.btn-apagar-comentario {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 0.3rem;
+}
+
+.sem-comentarios {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.comentarios-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comentarios-form input {
+  flex: 1;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 0.85rem;
 }

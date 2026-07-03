@@ -170,6 +170,10 @@ async function renderizarVotacao(v) {
       ${v.status === 'aberta' && !jaVotei ? `<button id="votar-${v.id}" class="btn-primary btn-small" style="width:auto; margin-top:0.8rem;">Votar</button>` : ''}
       ${jaVotei ? '<p class="ja-votou">Você já votou nessa votação.</p>' : ''}
       ${souDiretoriaVotacoes && v.status === 'aberta' ? `<button id="encerrar-${v.id}" class="btn-secondary btn-small" style="width:auto; margin-top:0.5rem;">Encerrar votação</button>` : ''}
+      <div class="comentarios-wrap">
+        <button class="comentarios-toggle" onclick="toggleComentarios('coment-votacao-${v.id}', 'votacao', '${v.id}')">💬 Comentários</button>
+        <div id="coment-votacao-${v.id}" style="display:none;"></div>
+      </div>
     </div>
   `;
 }

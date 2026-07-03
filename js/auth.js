@@ -6,6 +6,11 @@ async function fazerLogin(email, senha) {
   });
 
   if (error) {
+    if (error.message.toLowerCase().includes('email not confirmed')) {
+      mostrarErro('Você ainda não confirmou seu email. Verifique sua caixa de entrada (e o spam).');
+      mostrarBotaoReenviar(email);
+      return;
+    }
     mostrarErro(error.message);
     return;
   }
@@ -31,7 +36,29 @@ async function fazerCadastro(nomeCompleto, email, senha) {
     return;
   }
 
-  mostrarSucesso('Cadastro feito! Sua conta está pendente de aprovação por um diretor.');
+  mostrarSucesso('Cadastro feito! Enviamos um email de confirmação — clique no link para ativar sua conta antes de fazer login.');
+}
+
+// ===== Reenviar email de confirmação =====
+async function reenviarConfirmacao(email) {
+  const { error } = await supabaseClient.auth.resend({
+    type: 'signup',
+    email: email,
+  });
+
+  if (error) {
+    mostrarErro(`Erro ao reenviar: ${error.message}`);
+    return;
+  }
+
+  mostrarSucesso('Email de confirmação reenviado! Confira sua caixa de entrada.');
+}
+
+function mostrarBotaoReenviar(email) {
+  const container = document.getElementById('reenviar-container');
+  if (!container) return;
+  container.style.display = 'block';
+  container.querySelector('button').onclick = () => reenviarConfirmacao(email);
 }
 
 // ===== Verifica se já existe sessão ativa (usado no dashboard) =====
