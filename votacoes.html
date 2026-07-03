@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LATec FICR - Votações</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <h2>LATec FICR — Votações</h2>
+    <div>
+      <a href="dashboard.html" class="link-voltar">Voltar ao painel</a>
+      <button id="btn-logout">Sair</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div id="form-nova-votacao" style="display:none;" class="card-form">
+      <h3>Nova votação</h3>
+      <input type="text" id="vt-titulo" placeholder="Título da votação" />
+      <textarea id="vt-descricao" placeholder="Descrição (opcional)" rows="2"></textarea>
+      <label class="label-campo">Opções</label>
+      <div id="lista-opcoes">
+        <input type="text" class="input-opcao" placeholder="Opção 1" />
+        <input type="text" class="input-opcao" placeholder="Opção 2" />
+      </div>
+      <button id="btn-add-opcao" class="btn-secondary btn-small" style="width:auto; margin-top:0.3rem;">+ Adicionar opção</button>
+      <div style="margin-top:1rem;">
+        <button id="btn-criar-votacao" class="btn-primary btn-small">Criar votação</button>
+      </div>
+      <p id="erro-votacao" class="erro" style="display:none;"></p>
+    </div>
+
+    <div id="lista-votacoes">
+      <p>Carregando...</p>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/votacoes.js"></script>
+</body>
+</html>

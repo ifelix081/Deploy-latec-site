@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploy - Login</title>
+   <link rel="icon" type="image/webp" href="img/Deploy-D.webp">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-box">
+      <h1>Deploy - Liga Academica de Tecnologia FICR</h1>
+   <p class="subtitle" id="form-subtitle">Sistema de Gestão — entre com sua conta</p>
+
+      <!-- FORM DE LOGIN -->
+      <form id="form-login">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required />
+        </div>
+        <div class="form-group">
+          <label for="login-senha">Senha</label>
+          <input type="password" id="login-senha" required />
+        </div>
+        <button type="submit" class="btn-primary">Entrar</button>
+        <button type="button" class="btn-secondary" id="btn-ir-cadastro">Criar conta</button>
+      </form>
+
+      <!-- FORM DE CADASTRO (escondido por padrão) -->
+      <form id="form-cadastro" style="display: none;">
+        <div class="form-group">
+          <label for="cad-nome">Nome completo</label>
+          <input type="text" id="cad-nome" required />
+        </div>
+        <div class="form-group">
+          <label for="cad-email">Email</label>
+          <input type="email" id="cad-email" required />
+        </div>
+        <div class="form-group">
+          <label for="cad-senha">Senha</label>
+          <input type="password" id="cad-senha" required minlength="6" />
+        </div>
+        <button type="submit" class="btn-primary">Cadastrar</button>
+        <button type="button" class="btn-secondary" id="btn-ir-login">Voltar pro login</button>
+      </form>
+
+      <p class="error-msg" id="error-msg"></p>
+      <p class="success-msg" id="success-msg"></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    const formLogin = document.getElementById('form-login');
+    const formCadastro = document.getElementById('form-cadastro');
+    const subtitle = document.getElementById('form-subtitle');
+
+    document.getElementById('btn-ir-cadastro').addEventListener('click', () => {
+      formLogin.style.display = 'none';
+      formCadastro.style.display = 'block';
+      subtitle.textContent = 'Crie sua conta de membro';
+      document.getElementById('error-msg').style.display = 'none';
+    });
+
+    document.getElementById('btn-ir-login').addEventListener('click', () => {
+      formCadastro.style.display = 'none';
+      formLogin.style.display = 'block';
+      subtitle.textContent = 'Sistema de Gestão — entre com sua conta';
+      document.getElementById('error-msg').style.display = 'none';
+    });
+
+    formLogin.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const senha = document.getElementById('login-senha').value;
+      fazerLogin(email, senha);
+    });
+
+    formCadastro.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('cad-nome').value;
+      const email = document.getElementById('cad-email').value;
+      const senha = document.getElementById('cad-senha').value;
+      fazerCadastro(nome, email, senha);
+    });
+  </script>
+</body>
+</html>

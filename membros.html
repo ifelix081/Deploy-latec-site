@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploy - Membros</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <h2>Deploy — Membros</h2>
+    <div>
+      <a href="dashboard.html" class="link-voltar">Voltar ao painel</a>
+      <button id="btn-logout">Sair</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <p id="aviso-permissao" class="aviso" style="display:none;">
+      Você está vendo a lista em modo leitura — apenas a Diretoria (Presidente, Co-Presidente, Secretário) pode editar cargos e status.
+    </p>
+
+    <table class="tabela-membros">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Cargo</th>
+          <th>Status</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="lista-membros">
+        <tr><td colspan="5">Carregando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/membros.js"></script>
+</body>
+</html>

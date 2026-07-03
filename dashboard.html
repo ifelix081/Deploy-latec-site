@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LATec FICR - Painel</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <h2>LATec FICR — Painel</h2>
+    <button id="btn-logout">Sair</button>
+  </div>
+
+  <div class="container">
+    <p id="boas-vindas">Carregando...</p>
+    <nav class="nav-modulos">
+      <a href="membros.html">Membros</a>
+      <a href="eventos.html">Eventos</a>
+      <a href="presenca.html">Presença</a>
+      <a href="votacoes.html">Votações</a>
+    </nav>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

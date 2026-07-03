@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LATec FICR - Presença</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <h2>LATec FICR — Presença</h2>
+    <div>
+      <a href="dashboard.html" class="link-voltar">Voltar ao painel</a>
+      <button id="btn-logout">Sair</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="card-form">
+      <h3>Selecionar evento</h3>
+      <label class="label-campo">Evento</label>
+      <select id="select-evento">
+        <option value="">Carregando eventos...</option>
+      </select>
+    </div>
+
+    <p id="aviso-permissao" class="aviso" style="display:none;">
+      Você está vendo a lista em modo leitura — apenas a Diretoria pode registrar presença.
+    </p>
+
+    <div id="area-presenca"></div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/presenca.js"></script>
+</body>
+</html>

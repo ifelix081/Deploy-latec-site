@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploy - Eventos</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="topbar">
+    <h2>Deploy — Eventos</h2>
+    <div>
+      <a href="dashboard.html" class="link-voltar">Voltar ao painel</a>
+      <button id="btn-logout">Sair</button>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div id="form-novo-evento" style="display:none;" class="card-form">
+      <h3>Novo evento</h3>
+      <input type="text" id="ev-titulo" placeholder="Título do evento" />
+      <textarea id="ev-descricao" placeholder="Descrição (opcional)" rows="3"></textarea>
+      <label class="label-campo">Data e hora</label>
+      <input type="datetime-local" id="ev-data-hora" />
+      <input type="text" id="ev-local" placeholder="Local (opcional)" />
+      <select id="ev-tipo">
+        <option value="reuniao">Reunião</option>
+        <option value="workshop">Workshop</option>
+        <option value="evento_externo">Evento externo</option>
+      </select>
+      <button id="btn-criar-evento" class="btn-primary btn-small">Criar evento</button>
+      <p id="erro-evento" class="erro" style="display:none;"></p>
+    </div>
+
+    <div id="lista-eventos">
+      <p>Carregando...</p>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/eventos.js"></script>
+</body>
+</html>
