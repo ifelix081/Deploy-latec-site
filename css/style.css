@@ -789,35 +789,7 @@ button.btn-secondary:hover {
   margin-left: 224px;
 }
 
-/* ===== Responsivo ===== */
-@media (max-width: 900px) {
-  .sidebar {
-    display: none;
-  }
-
-  .page-title {
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 1.1rem;
-    font-size: 1.3rem;
-  }
-
-  .app-page .container,
-  .app-page .login-container {
-    margin-left: 0;
-    margin-bottom: 2rem;
-  }
-
-  .container {
-    padding: 0 1.1rem;
-  }
-
-  .fab-button,
-  .fab-overlay {
-    display: flex;
-  }
-}
-
+/* ===== FAB (botão flutuante mobile) — regras base ===== */
 .fab-button,
 .fab-overlay {
   display: none;
@@ -923,6 +895,35 @@ button.btn-secondary:hover {
 
 .fab-sair {
   color: var(--danger);
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+
+  .page-title {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1.1rem;
+    font-size: 1.3rem;
+  }
+
+  .app-page .container,
+  .app-page .login-container {
+    margin-left: 0;
+    margin-bottom: 2rem;
+  }
+
+  .container {
+    padding: 0 1.1rem;
+  }
+
+  .fab-button,
+  .fab-overlay {
+    display: flex;
+  }
 }
 
 @media (max-width: 480px) {
