@@ -188,6 +188,10 @@ button.btn-secondary:hover {
   padding: 0 1.25rem;
 }
 
+.container:has(.tabela-membros-wrap) {
+  max-width: 1200px;
+}
+
 .aviso {
   background: var(--warn-soft);
   color: var(--warn);
@@ -778,15 +782,11 @@ button.btn-secondary:hover {
   margin: 2.2rem auto 1.3rem;
   max-width: 880px;
   padding: 0 1.25rem;
-  margin-left: calc(224px + 1.25rem);
+  text-align: center;
 }
 
-.app-page .container {
-  margin-left: 224px;
-}
-
-.app-page .login-container {
-  margin-left: 224px;
+.app-page {
+  padding-left: 224px;
 }
 
 /* ===== FAB (botão flutuante mobile) — regras base ===== */
@@ -910,9 +910,12 @@ button.btn-secondary:hover {
     font-size: 1.3rem;
   }
 
+  .app-page {
+    padding-left: 0;
+  }
+
   .app-page .container,
   .app-page .login-container {
-    margin-left: 0;
     margin-bottom: 2rem;
   }
 
@@ -964,5 +967,142 @@ button.btn-secondary:hover {
 
   .comentarios-form button {
     width: 100%;
+  }
+}
+
+/* ===== Centralização geral (bloco + conteúdo interno) ===== */
+.container {
+  text-align: center;
+}
+
+.card-form,
+.card-evento,
+.login-box {
+  text-align: center;
+}
+
+.card-form input,
+.card-form textarea,
+.card-form select,
+.form-group input,
+.comentarios-form input {
+  text-align: center;
+}
+
+.card-evento-header,
+.avaliacao-bloco,
+.ordenacao-bar,
+.filtro-categorias,
+.categoria-titulo,
+.comentarios-form {
+  justify-content: center;
+}
+
+.comentario-item {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tabela-membros-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.tabela-membros th,
+.tabela-membros td {
+  text-align: center;
+}
+
+.avaliacao-media,
+.avaliacao-estrelas {
+  justify-content: center;
+}
+
+.categoria-scroll {
+  justify-content: center;
+}
+
+.opcao-votacao label {
+  justify-content: center;
+}
+
+/* ===== Tabelas viram cards no mobile ===== */
+@media (max-width: 700px) {
+  .tabela-membros-wrap {
+    overflow-x: visible;
+  }
+
+  .tabela-membros {
+    min-width: 0;
+    width: 100%;
+    display: block;
+    border: none;
+    background: none;
+  }
+
+  .tabela-membros thead {
+    display: none;
+  }
+
+  .tabela-membros tbody {
+    display: block;
+  }
+
+  .tabela-membros tr {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .tabela-membros td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--line);
+    text-align: right;
+  }
+
+  .tabela-membros td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .tabela-membros td::before {
+    content: attr(data-label);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-align: left;
+    flex-shrink: 0;
+  }
+
+  .tabela-membros td:first-child {
+    padding-top: 0;
+    padding-bottom: 0.7rem;
+  }
+
+  .tabela-membros td:first-child::before {
+    content: none;
+  }
+
+  .cel-nome {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .tabela-membros select {
+    flex: 1;
+    max-width: 65%;
   }
 }

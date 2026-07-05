@@ -96,30 +96,30 @@ function linhaMembro(m) {
   if (!souDiretoria) {
     return `
       <tr>
-        <td><img src="${foto}" class="avatar-pequeno" alt="" />${escapeHtml(m.nome_completo)}</td>
-        <td>${escapeHtml(m.email)}</td>
-        <td>${escapeHtml(m.cargo)}</td>
-        <td><span class="badge badge-${m.status}">${m.status}</span></td>
-        <td>—</td>
+        <td data-label="Nome"><span class="cel-nome"><img src="${foto}" class="avatar-pequeno" alt="" />${escapeHtml(m.nome_completo)}</span></td>
+        <td data-label="Email">${escapeHtml(m.email)}</td>
+        <td data-label="Cargo">${escapeHtml(m.cargo)}</td>
+        <td data-label="Status"><span class="badge badge-${m.status}">${m.status}</span></td>
+        <td data-label="Ação">—</td>
       </tr>
     `;
   }
 
   return `
     <tr>
-      <td><img src="${foto}" class="avatar-pequeno" alt="" />${escapeHtml(m.nome_completo)}</td>
-      <td>${escapeHtml(m.email)}</td>
-      <td>
+      <td data-label="Nome"><span class="cel-nome"><img src="${foto}" class="avatar-pequeno" alt="" />${escapeHtml(m.nome_completo)}</span></td>
+      <td data-label="Email">${escapeHtml(m.email)}</td>
+      <td data-label="Cargo">
         <select id="cargo-${m.id}">
           ${CARGOS.map(c => `<option value="${c}" ${c === m.cargo ? 'selected' : ''}>${c}</option>`).join('')}
         </select>
       </td>
-      <td>
+      <td data-label="Status">
         <select id="status-${m.id}">
           ${STATUS.map(s => `<option value="${s}" ${s === m.status ? 'selected' : ''}>${s}</option>`).join('')}
         </select>
       </td>
-      <td><button id="salvar-${m.id}" class="btn-primary btn-small">Salvar</button></td>
+      <td data-label="Ação"><button id="salvar-${m.id}" class="btn-primary btn-small">Salvar</button></td>
     </tr>
   `;
 }
