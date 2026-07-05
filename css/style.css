@@ -792,52 +792,8 @@ button.btn-secondary:hover {
 /* ===== Responsivo ===== */
 @media (max-width: 900px) {
   .sidebar {
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: auto;
-    height: 60px;
-    flex-direction: row;
-    align-items: center;
-    padding: 0 0.3rem;
-    border-right: none;
-    border-top: 1px solid var(--line);
+    display: none;
   }
-
-  .sidebar-brand { display: none; }
-
-  .sidebar-nav {
-    flex-direction: row;
-    flex: 1;
-    justify-content: space-around;
-    overflow-x: auto;
-    gap: 0;
-  }
-
-  .sidebar-link {
-    flex-direction: column;
-    gap: 0.15rem;
-    padding: 0.5rem 0.4rem;
-    font-size: 0.6rem;
-    border-radius: 0;
-  }
-
-  .sidebar-link.active {
-    background: none;
-    color: var(--accent);
-  }
-
-  .sidebar-logout {
-    flex-direction: column;
-    gap: 0.15rem;
-    font-size: 0.6rem;
-    margin-top: 0;
-    border-top: none;
-    padding: 0.5rem 0.4rem;
-  }
-
-  .sidebar-label { display: none; }
 
   .page-title {
     margin-left: auto;
@@ -849,12 +805,124 @@ button.btn-secondary:hover {
   .app-page .container,
   .app-page .login-container {
     margin-left: 0;
-    margin-bottom: 80px;
+    margin-bottom: 2rem;
   }
 
   .container {
     padding: 0 1.1rem;
   }
+
+  .fab-button,
+  .fab-overlay {
+    display: flex;
+  }
+}
+
+.fab-button,
+.fab-overlay {
+  display: none;
+}
+
+.fab-button {
+  position: fixed;
+  bottom: 1.4rem;
+  right: 1.4rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  align-items: center;
+  justify-content: center;
+  z-index: 320;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  transition: opacity 0.15s ease;
+}
+
+.fab-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fab-button:active {
+  opacity: 0.8;
+}
+
+.fab-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+.fab-overlay.aberto {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fab-panel {
+  position: fixed;
+  bottom: 5.2rem;
+  right: 1.4rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.5rem;
+  z-index: 310;
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
+  gap: 0.2rem;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+  transform: scale(0.9) translateY(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.fab-panel.aberto {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+.fab-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.6rem 0.3rem;
+  border-radius: 10px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.62rem;
+  text-align: center;
+  background: none;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+}
+
+.fab-link svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fab-link:active {
+  background: var(--surface-2);
+}
+
+.fab-link.active {
+  color: var(--accent);
+}
+
+.fab-sair {
+  color: var(--danger);
 }
 
 @media (max-width: 480px) {

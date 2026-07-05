@@ -39,4 +39,44 @@ const ICONE_SAIR_SIDEBAR = '<path d="M8 3.5H4.5a1 1 0 00-1 1v11a1 1 0 001 1H8"/>
     const item = NAV_ITEMS_SIDEBAR.find(([href]) => href === paginaAtual);
     if (item) tituloEl.textContent = item[1];
   }
+
+  // ===== Botão flutuante (mobile), estilo AssistiveTouch =====
+  const painelLinks = NAV_ITEMS_SIDEBAR.map(([href, label, path]) => {
+    const ativo = href === paginaAtual ? ' active' : '';
+    return `<a href="${href}" class="fab-link${ativo}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${path}</svg><span>${label}</span></a>`;
+  }).join('');
+
+  const fabHtml = `
+    <div class="fab-overlay" id="fab-overlay"></div>
+    <div class="fab-panel" id="fab-panel">
+      ${painelLinks}
+      <button id="fab-sair" class="fab-link fab-sair"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICONE_SAIR_SIDEBAR}</svg><span>Sair</span></button>
+    </div>
+    <button class="fab-button" id="fab-button">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="4.5" cy="10" r="1.3"/><circle cx="10" cy="10" r="1.3"/><circle cx="15.5" cy="10" r="1.3"/></svg>
+    </button>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', fabHtml);
+
+  const fabButton = document.getElementById('fab-button');
+  const fabPanel = document.getElementById('fab-panel');
+  const fabOverlay = document.getElementById('fab-overlay');
+
+  function fecharFab() {
+    fabPanel.classList.remove('aberto');
+    fabOverlay.classList.remove('aberto');
+  }
+
+  fabButton.addEventListener('click', () => {
+    fabPanel.classList.toggle('aberto');
+    fabOverlay.classList.toggle('aberto');
+  });
+
+  fabOverlay.addEventListener('click', fecharFab);
+
+  document.getElementById('fab-sair').addEventListener('click', () => {
+    fecharFab();
+    fazerLogout();
+  });
 })();
