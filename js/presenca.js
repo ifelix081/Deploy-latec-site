@@ -106,6 +106,7 @@ async function carregarListaPresenca(eventoId) {
   }).join('');
 
   area.innerHTML = `
+    <div class="tabela-membros-wrap">
     <table class="tabela-membros">
       <thead>
         <tr>
@@ -116,6 +117,7 @@ async function carregarListaPresenca(eventoId) {
       </thead>
       <tbody>${linhas}</tbody>
     </table>
+    </div>
     ${souDiretoriaPresenca ? '<button id="btn-salvar-presenca" class="btn-primary btn-small" style="margin-top:1rem; width:auto;">Salvar presença</button>' : ''}
     <p id="msg-presenca" class="erro" style="display:none;"></p>
   `;
@@ -141,13 +143,13 @@ async function salvarPresenca(eventoId, membros) {
 
   if (error) {
     msgEl.textContent = `Erro ao salvar: ${error.message}`;
-    msgEl.style.color = '#9C4F45';
+    msgEl.style.color = '#D57C70';
     msgEl.style.display = 'block';
     return;
   }
 
   msgEl.textContent = 'Presença salva com sucesso!';
-  msgEl.style.color = '#52684C';
+  msgEl.style.color = '#82A578';
   msgEl.style.display = 'block';
 }
 

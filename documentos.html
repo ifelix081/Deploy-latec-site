@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LATec FICR - Documentos</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app-page">
+  <div id="sidebar-placeholder"></div>
+
+  <h1 class="page-title" id="page-title-placeholder"></h1>
+
+  <div class="container">
+    <p id="aviso-permissao" class="aviso" style="display:none;">
+      Essa área é restrita à Diretoria (Presidente, Co-Presidente, Secretário).
+    </p>
+
+    <div id="area-doc" style="display:none;" class="card-form">
+      <h3>Emitir documento</h3>
+
+      <div id="doc-campo-membro">
+        <label class="label-campo">Membro</label>
+        <select id="doc-membro">
+          <option value="">Carregando membros...</option>
+        </select>
+      </div>
+
+      <label class="label-campo">Tipo de documento</label>
+      <select id="doc-tipo">
+        <option value="membro_ativo">Declaração de membro ativo</option>
+        <option value="cargo">Declaração de cargo/função</option>
+        <option value="evento">Declaração de participação em evento</option>
+        <option value="votacao">Ata de resultado de votação</option>
+        <option value="projeto">Declaração de participação em projeto</option>
+        <option value="lista_presenca">Lista de presença de evento</option>
+      </select>
+
+      <div id="doc-campo-evento-presenca" style="display:none;">
+        <label class="label-campo">Evento</label>
+        <select id="doc-evento-presenca">
+          <option value="">Carregando eventos...</option>
+        </select>
+      </div>
+
+      <div id="doc-campo-evento" style="display:none;">
+        <label class="label-campo">Evento</label>
+        <select id="doc-evento">
+          <option value="">Carregando eventos...</option>
+        </select>
+      </div>
+
+      <div id="doc-campo-votacao" style="display:none;">
+        <label class="label-campo">Votação</label>
+        <select id="doc-votacao">
+          <option value="">Carregando votações...</option>
+        </select>
+      </div>
+
+      <div id="doc-campo-projeto" style="display:none;">
+        <label class="label-campo">Projeto</label>
+        <select id="doc-projeto">
+          <option value="">Carregando projetos...</option>
+        </select>
+      </div>
+
+      <button id="btn-gerar-doc" class="btn-primary btn-small">Gerar PDF</button>
+      <p id="erro-doc" class="erro" style="display:none;"></p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/documentos.js"></script>
+</body>
+</html>

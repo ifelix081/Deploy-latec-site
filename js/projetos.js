@@ -17,6 +17,8 @@ const STATUS_BADGE_PJ = {
   pausado: 'badge-inativo',
 };
 
+let ordenacaoAtual = 'recentes';
+
 (async function iniciarProjetos() {
   const session = await exigirLogin();
   if (!session) return;
@@ -39,6 +41,11 @@ const STATUS_BADGE_PJ = {
     await carregarSelectResponsavel();
     document.getElementById('btn-criar-projeto').addEventListener('click', criarProjeto);
   }
+
+  document.getElementById('select-ordenacao').addEventListener('change', (e) => {
+    ordenacaoAtual = e.target.value;
+    carregarProjetos();
+  });
 
   await carregarProjetos();
 })();
@@ -98,7 +105,7 @@ async function criarProjeto() {
 async function carregarProjetos() {
   const { data: projetos, error } = await supabaseClient
     .from('projetos')
-    .select('id, titulo, descricao, status, data_inicio, data_fim, responsavel_id, membros(nome_completo)')
+    .select('id, titulo, descricao, status, data_inicio, data_fim, responsavel_id, created_at, membros(nome_completo)')
     .order('created_at', { ascending: false });
 
   const container = document.getElementById('lista-projetos');
@@ -113,16 +120,36 @@ async function carregarProjetos() {
     return;
   }
 
-  container.innerHTML = projetos.map(cardProjeto).join('');
+  const { data: avaliacoes } = await supabaseClient
+    .from('avaliacoes_projetos')
+    .select('projeto_id, membro_id, nota, comentario');
 
-  if (souDiretoriaProjetos) {
-    projetos.forEach(p => {
-      const select = document.getElementById(`status-projeto-${p.id}`);
-      if (select) {
-        select.addEventListener('change', () => atualizarStatusProjeto(p.id, select.value));
-      }
-    });
+  const projetosComNota = projetos.map(p => {
+    const notasDoProjeto = (avaliacoes || []).filter(a => a.projeto_id === p.id);
+    const media = notasDoProjeto.length > 0
+      ? notasDoProjeto.reduce((soma, a) => soma + a.nota, 0) / notasDoProjeto.length
+      : 0;
+    const minhaAvaliacao = notasDoProjeto.find(a => a.membro_id === meuMembroId);
+    return { ...p, _media: media, _qtdAvaliacoes: notasDoProjeto.length, _minhaAvaliacao: minhaAvaliacao };
+  });
+
+  if (ordenacaoAtual === 'melhor_avaliados') {
+    projetosComNota.sort((a, b) => b._media - a._media || b._qtdAvaliacoes - a._qtdAvaliacoes);
   }
+
+  container.innerHTML = projetosComNota.map(cardProjeto).join('');
+
+  projetosComNota.forEach(p => {
+    if (souDiretoriaProjetos) {
+      const select = document.getElementById(`status-projeto-${p.id}`);
+      if (select) select.addEventListener('change', () => atualizarStatusProjeto(p.id, select.value));
+    }
+
+    const estrelas = document.querySelectorAll(`#estrelas-${p.id} .estrela`);
+    estrelas.forEach(estrela => {
+      estrela.addEventListener('click', () => avaliarProjeto(p.id, parseInt(estrela.dataset.valor)));
+    });
+  });
 }
 
 function cardProjeto(p) {
@@ -135,6 +162,11 @@ function cardProjeto(p) {
     </select>
   ` : `<span class="badge ${STATUS_BADGE_PJ[p.status]}">${STATUS_LABEL_PJ[p.status]}</span>`;
 
+  const notaAtual = p._minhaAvaliacao ? p._minhaAvaliacao.nota : 0;
+  const estrelasHtml = [1, 2, 3, 4, 5].map(v =>
+    `<span class="estrela ${v <= notaAtual ? 'marcada' : ''}" data-valor="${v}">★</span>`
+  ).join('');
+
   return `
     <div class="card-evento">
       <div class="card-evento-header">
@@ -144,12 +176,34 @@ function cardProjeto(p) {
       <p class="card-evento-data">Responsável: ${escapeHtmlPj(responsavelNome)}${dataInicio ? ' · Início: ' + dataInicio : ''}</p>
       ${p.descricao ? `<p class="card-evento-desc">${escapeHtmlPj(p.descricao)}</p>` : ''}
       ${souDiretoriaProjetos ? statusHtml : ''}
+
+      <div class="avaliacao-bloco">
+        <div class="avaliacao-media">
+          <span class="media-numero">${p._media > 0 ? p._media.toFixed(1) : '—'}</span>
+          <span class="media-qtd">${p._qtdAvaliacoes} avaliação(ões)</span>
+        </div>
+        <div class="avaliacao-estrelas" id="estrelas-${p.id}">${estrelasHtml}</div>
+      </div>
+
       <div class="comentarios-wrap">
-        <button class="comentarios-toggle" onclick="toggleComentarios('coment-projeto-${p.id}', 'projeto', '${p.id}')">💬 Comentários</button>
+        <button class="comentarios-toggle" onclick="toggleComentarios('coment-projeto-${p.id}', 'projeto', '${p.id}')">Comentários</button>
         <div id="coment-projeto-${p.id}" style="display:none;"></div>
       </div>
     </div>
   `;
+}
+
+async function avaliarProjeto(projetoId, nota) {
+  const { error } = await supabaseClient
+    .from('avaliacoes_projetos')
+    .upsert({ projeto_id: projetoId, membro_id: meuMembroId, nota }, { onConflict: 'projeto_id,membro_id' });
+
+  if (error) {
+    alert(`Erro ao avaliar: ${error.message}`);
+    return;
+  }
+
+  await carregarProjetos();
 }
 
 async function atualizarStatusProjeto(id, novoStatus) {

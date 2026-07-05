@@ -1,4 +1,6 @@
 const CARGOS = [
+  'Coordenador de Curso',
+  'Professor Orientador',
   'Presidente',
   'Co-Presidente',
   'Secretário',
@@ -12,6 +14,21 @@ const CARGOS = [
   'Vice-Diretor de Finanças',
   'Membro',
 ];
+
+const RANK_CARGO = {
+  'Coordenador de Curso': 0,
+  'Professor Orientador': 1,
+  'Presidente': 2,
+  'Co-Presidente': 3,
+  'Secretário': 4,
+};
+
+function rankDoCargo(cargo) {
+  if (cargo in RANK_CARGO) return RANK_CARGO[cargo];
+  if (cargo.startsWith('Diretor de')) return 5;
+  if (cargo.startsWith('Vice-Diretor de')) return 6;
+  return 7; // Membro e outros
+}
 
 const STATUS = ['ativo', 'inativo', 'pendente'];
 
@@ -60,6 +77,8 @@ async function carregarMembros() {
     tbody.innerHTML = `<tr><td colspan="5">Nenhum membro encontrado.</td></tr>`;
     return;
   }
+
+  membros.sort((a, b) => rankDoCargo(a.cargo) - rankDoCargo(b.cargo) || a.nome_completo.localeCompare(b.nome_completo));
 
   tbody.innerHTML = membros.map(m => linhaMembro(m)).join('');
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LATec FICR - Notícias</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app-page">
+  <div id="sidebar-placeholder"></div>
+
+  <h1 class="page-title" id="page-title-placeholder"></h1>
+
+  <div class="container">
+
+    <div id="form-nova-noticia" style="display:none;" class="card-form">
+      <h3>Nova notícia</h3>
+      <input type="text" id="nt-titulo" placeholder="Título" />
+      <textarea id="nt-resumo" placeholder="Resumo (opcional)" rows="2"></textarea>
+      <input type="text" id="nt-link" placeholder="Link (opcional)" />
+      <select id="nt-categoria">
+        <option>Porto Digital</option>
+        <option>Liga</option>
+        <option>Hackathons</option>
+        <option>Editais</option>
+        <option>Eventos</option>
+        <option>Programas de Inovação</option>
+        <option>Oportunidades</option>
+      </select>
+      <button id="btn-criar-noticia" class="btn-primary btn-small">Publicar</button>
+      <p id="erro-noticia" class="erro" style="display:none;"></p>
+    </div>
+
+    <div class="filtro-categorias" id="filtro-categorias"></div>
+
+    <div id="lista-noticias">
+      <p>Carregando...</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/noticias.js"></script>
+</body>
+</html>

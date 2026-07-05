@@ -80,12 +80,12 @@ async function salvarPerfil() {
 
   if (error) {
     msgEl.textContent = `Erro ao salvar: ${error.message}`;
-    msgEl.style.color = '#9C4F45';
+    msgEl.style.color = '#D57C70';
     msgEl.style.display = 'block';
     return;
   }
 
   msgEl.textContent = 'Perfil salvo com sucesso!';
-  msgEl.style.color = '#52684C';
+  msgEl.style.color = '#82A578';
   msgEl.style.display = 'block';
 }

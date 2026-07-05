@@ -1,4 +1,5 @@
 const CARGOS_DIRETORIA_EV = ['Presidente', 'Co-Presidente', 'Secretário'];
+const CATEGORIAS_EV = ['Hackathons', 'Workshops', 'Palestras', 'Meetups', 'Competições', 'Reunião'];
 
 let souDiretoriaEventos = false;
 let meuMembroId = null;
@@ -37,7 +38,7 @@ const TIPO_LABEL = {
 async function carregarEventos() {
   const { data: eventos, error } = await supabaseClient
     .from('eventos')
-    .select('id, titulo, descricao, data_hora, local, tipo')
+    .select('id, titulo, descricao, data_hora, local, tipo, categoria')
     .order('data_hora', { ascending: true });
 
   const container = document.getElementById('lista-eventos');
@@ -52,7 +53,23 @@ async function carregarEventos() {
     return;
   }
 
-  container.innerHTML = eventos.map(cardEvento).join('');
+  container.innerHTML = CATEGORIAS_EV
+    .map(cat => blocoCategoria(cat, eventos.filter(e => (e.categoria || 'Reunião') === cat)))
+    .filter(Boolean)
+    .join('');
+}
+
+function blocoCategoria(categoria, eventosDaCategoria) {
+  if (eventosDaCategoria.length === 0) return '';
+
+  return `
+    <div class="categoria-bloco">
+      <h3 class="categoria-titulo">${categoria} <span class="categoria-contagem">${eventosDaCategoria.length}</span></h3>
+      <div class="categoria-scroll">
+        ${eventosDaCategoria.map(cardEvento).join('')}
+      </div>
+    </div>
+  `;
 }
 
 function cardEvento(ev) {
@@ -63,7 +80,7 @@ function cardEvento(ev) {
   });
 
   return `
-    <div class="card-evento">
+    <div class="card-evento card-evento-mini">
       <div class="card-evento-header">
         <strong>${escapeHtmlEv(ev.titulo)}</strong>
         <span class="badge badge-tipo">${TIPO_LABEL[ev.tipo] || ev.tipo}</span>
@@ -71,7 +88,7 @@ function cardEvento(ev) {
       <p class="card-evento-data">${dataFormatada}${ev.local ? ' · ' + escapeHtmlEv(ev.local) : ''}</p>
       ${ev.descricao ? `<p class="card-evento-desc">${escapeHtmlEv(ev.descricao)}</p>` : ''}
       <div class="comentarios-wrap">
-        <button class="comentarios-toggle" onclick="toggleComentarios('coment-evento-${ev.id}', 'evento', '${ev.id}')">💬 Comentários</button>
+        <button class="comentarios-toggle" onclick="toggleComentarios('coment-evento-${ev.id}', 'evento', '${ev.id}')">Comentários</button>
         <div id="coment-evento-${ev.id}" style="display:none;"></div>
       </div>
     </div>
@@ -84,6 +101,7 @@ async function criarEvento() {
   const dataHora = document.getElementById('ev-data-hora').value;
   const local = document.getElementById('ev-local').value.trim();
   const tipo = document.getElementById('ev-tipo').value;
+  const categoria = document.getElementById('ev-categoria').value;
 
   const erroEl = document.getElementById('erro-evento');
   erroEl.style.display = 'none';
@@ -102,6 +120,7 @@ async function criarEvento() {
       data_hora: new Date(dataHora).toISOString(),
       local: local || null,
       tipo,
+      categoria,
     });
 
   if (error) {
