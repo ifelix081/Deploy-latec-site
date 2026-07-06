@@ -33,14 +33,15 @@ async function processarCallbackDiscord() {
 
   const { data: { session } } = await supabaseClient.auth.getSession();
 
-  const resposta = await fetch(`${SUPABASE_FUNCTIONS_URL}/conectar-discord`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.access_token}`,
-    },
-    body: JSON.stringify({ code, redirect_uri: urlRedirectDiscord() }),
-  });
+ const resposta = await fetch(`${SUPABASE_FUNCTIONS_URL}/conectar-discord`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    apikey: DISCORD_ANON_KEY,
+    Authorization: `Bearer ${session.access_token}`,
+  },
+  body: JSON.stringify({ code, redirect_uri: urlRedirectDiscord() }),
+});
 
   const resultado = await resposta.json();
 
