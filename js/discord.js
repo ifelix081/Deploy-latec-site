@@ -3,7 +3,7 @@ const DISCORD_CLIENT_ID = '1523596355845619794';
 
 // Mesma URL do seu projeto Supabase, só trocando /rest ou nada por /functions/v1
 // Ex: se seu supabase-config.js usa 'https://vhzpwxaolisqdbakslna.supabase.co', cole igual aqui + /functions/v1
-const SUPABASE_FUNCTIONS_URL = 'https://SEU_PROJECT_REF.supabase.co/functions/v1';
+const SUPABASE_FUNCTIONS_URL = 'https://vhzpwxaolisqdbakslna.supabase.co/functions/v1';
 
 let medalhasCache = null; // { role_id: {nome, emoji, cor, prioridade} }
 
