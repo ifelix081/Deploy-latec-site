@@ -24,7 +24,7 @@ const ICONE_SAIR_SIDEBAR = '<path d="M8 3.5H4.5a1 1 0 00-1 1v11a1 1 0 001 1H8"/>
   }).join('\n      ');
 
   const sidebarHtml = `
-    <div class="sidebar-brand"><span>//</span> LATEC_FICR</div>
+    <div class="sidebar-brand"><span>//</span> DEPLOY</div>
     <nav class="sidebar-nav">
       ${links}
     </nav>

@@ -1,7 +1,7 @@
 {
-  "name": "LATec FICR",
-  "short_name": "LATec FICR",
-  "description": "Liga Acadêmica de Tecnologia — FICR",
+  "name": "Deploy",
+  "short_name": "Deploy",
+  "description": "Liga Acadêmica de Tecnologia — Deploy",
   "start_url": "/dashboard.html",
   "scope": "/",
   "display": "standalone",
