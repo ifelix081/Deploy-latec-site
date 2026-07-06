@@ -4,7 +4,7 @@ const DISCORD_CLIENT_ID = '1523596355845619794';
 // Mesma URL do seu projeto Supabase, só trocando /rest ou nada por /functions/v1
 // Ex: se seu supabase-config.js usa 'https://vhzpwxaolisqdbakslna.supabase.co', cole igual aqui + /functions/v1
 const SUPABASE_FUNCTIONS_URL = 'https://vhzpwxaolisqdbakslna.supabase.co/functions/v1';
-
+const SUPABASE_ANON_KEY = 'sb_publishable_1PMiP_GWMoo6u26n8rMwXA_ZQ2n-zY5';
 let medalhasCache = null; // { role_id: {nome, emoji, cor, prioridade} }
 
 function urlRedirectDiscord() {
