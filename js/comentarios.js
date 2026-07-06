@@ -21,7 +21,7 @@ async function carregarComentarios(entidadeTipo, entidadeId, containerId) {
 
   const { data: comentarios, error } = await supabaseClient
     .from('comentarios')
-    .select('id, conteudo, criado_em, autor_id, membros(nome_completo, nickname, foto_url)')
+    .select('id, conteudo, criado_em, autor_id, membros(nome_completo, nickname, foto_url, discord_roles)')
     .eq('entidade_tipo', entidadeTipo)
     .eq('entidade_id', entidadeId)
     .order('criado_em', { ascending: true });
@@ -31,7 +31,8 @@ async function carregarComentarios(entidadeTipo, entidadeId, containerId) {
     return;
   }
 
-  const listaHtml = (comentarios || []).map(c => itemComentario(c)).join('');
+  const medalhas = await carregarMedalhas();
+  const listaHtml = (comentarios || []).map(c => itemComentario(c, medalhas)).join('');
 
   container.innerHTML = `
     <div class="comentarios-lista">${listaHtml || '<p class="sem-comentarios">Nenhum comentário ainda.</p>'}</div>
@@ -57,19 +58,21 @@ async function carregarComentarios(entidadeTipo, entidadeId, containerId) {
   });
 }
 
-function itemComentario(c) {
+function itemComentario(c, medalhas) {
   const autor = c.membros;
   const nomeExibicao = autor ? (autor.nickname || autor.nome_completo) : 'Membro';
   const foto = (autor && autor.foto_url) || (FOTO_PADRAO_COM + encodeURIComponent(nomeExibicao));
   const data = new Date(c.criado_em).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 
   const podeApagar = c.autor_id === meuMembroId;
+  const badgeHtml = badgesHtmlDeCache(autor && autor.discord_roles, medalhas, true);
 
   return `
     <div class="comentario-item">
       <img src="${foto}" class="avatar-pequeno" alt="" />
       <div class="comentario-corpo">
         <span class="comentario-autor">${escapeHtmlCom(nomeExibicao)}</span>
+        ${badgeHtml}
         <span class="comentario-data">${data}</span>
         <p class="comentario-texto">${escapeHtmlCom(c.conteudo)}</p>
       </div>

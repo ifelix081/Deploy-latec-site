@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <title>Deploy - Extras</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -142,6 +145,7 @@
               <strong id="qq-nome"></strong>
               <span class="badge badge-tipo" id="qq-cargo"></span>
             </div>
+            <div id="qq-badges" style="margin-top:0.6rem; display:flex; flex-wrap:wrap; gap:0.4rem;"></div>
           </div>
         </div>
       </div>
@@ -192,6 +196,43 @@
         </div>
       </div>
 
+      <!-- ===== Gerenciar Medalhas do Discord (Diretoria) ===== -->
+      <div class="card-ferramenta">
+        <button class="ferramenta-toggle" id="toggle-medalhas">
+          <span class="ferramenta-titulo">🏅 Gerenciar Medalhas do Discord</span>
+          <span class="ferramenta-seta">›</span>
+        </button>
+        <div class="ferramenta-corpo" id="corpo-medalhas" style="display:none;">
+          <p id="medalhas-sem-permissao" class="aviso" style="display:none;">Só a Diretoria pode gerenciar medalhas.</p>
+
+          <div id="medalhas-conteudo" style="display:none;">
+            <p class="ferramenta-desc">
+              Cadastre aqui o ID de cada cargo do Discord e qual medalha ele vira no site.
+              Pra pegar o ID do cargo: Configurações do Discord → Avançado → ative o Modo Desenvolvedor,
+              depois clique com botão direito no cargo (nas configurações do servidor) → Copiar ID.
+            </p>
+
+            <div class="card-form" style="margin-bottom:1.2rem;">
+              <h3>Nova medalha</h3>
+              <label class="label-campo">ID do cargo no Discord</label>
+              <input type="text" id="medalha-role-id" placeholder="Ex: 123456789012345678" />
+              <label class="label-campo">Nome da medalha</label>
+              <input type="text" id="medalha-nome" placeholder="Ex: Diretoria" />
+              <label class="label-campo">Emoji</label>
+              <input type="text" id="medalha-emoji" placeholder="Ex: 🥇" />
+              <label class="label-campo">Cor (hex)</label>
+              <input type="text" id="medalha-cor" placeholder="Ex: #D18A5C" value="#D18A5C" />
+              <label class="label-campo">Prioridade (maior = aparece como medalha principal nos comentários)</label>
+              <input type="number" id="medalha-prioridade" value="0" />
+              <button type="button" id="btn-salvar-medalha" class="btn-primary btn-small" style="width:auto; margin-top:0.6rem;">Salvar medalha</button>
+              <p id="erro-medalha" class="erro" style="display:none;"></p>
+            </div>
+
+            <div id="lista-medalhas"><p>Carregando...</p></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -200,6 +241,7 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/sidebar.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/discord.js"></script>
   <script src="js/extras.js"></script>
 </body>
 </html>

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/favicon.ico" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <title>Deploy - Meu Perfil</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -40,6 +43,22 @@
       <button id="btn-salvar-perfil" class="btn-primary btn-small" style="width:auto; margin-top:0.8rem;">Salvar</button>
       <p id="msg-perfil" class="erro" style="display:none;"></p>
     </div>
+
+    <div class="card-form" style="margin-top:1rem;">
+      <h3>Discord</h3>
+
+      <div id="discord-nao-conectado">
+        <p class="ferramenta-desc" style="margin-top:0;">Conecte sua conta do Discord pra suas medalhas de cargo aparecerem no site.</p>
+        <button id="btn-conectar-discord" class="btn-secondary btn-small" style="width:auto;">Conectar Discord</button>
+      </div>
+
+      <div id="discord-conectado" style="display:none;">
+        <p class="ferramenta-desc" style="margin-top:0;">Conectado como <strong id="discord-username"></strong></p>
+        <div id="discord-badges" style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.6rem;"></div>
+      </div>
+
+      <p id="discord-erro" class="erro" style="display:none; margin-top:0.6rem;"></p>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -47,5 +66,7 @@
   <script src="js/sidebar.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/perfil.js"></script>
+  <script src="js/discord.js"></script>
+  <script src="js/perfil-discord.js"></script>
 </body>
 </html>

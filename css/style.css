@@ -1436,3 +1436,15 @@ button.btn-secondary:hover {
 .banner-instalar-fechar:hover {
   color: var(--ink);
 }
+
+/* ===== Badge de medalha do Discord ===== */
+.badge-discord {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 20px;
+  white-space: nowrap;
+}

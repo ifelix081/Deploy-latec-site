@@ -29,6 +29,7 @@ let notaProfessorSelecionada = 0;
   configurarAcordeao('toggle-quemequem', 'corpo-quemequem', () => configurarQuemEQuem());
   configurarAcordeao('toggle-ranking-presenca', 'corpo-ranking-presenca', () => carregarRankingPresenca());
   configurarAcordeao('toggle-ranking-prof', 'corpo-ranking-prof', () => configurarRankingProfessores());
+  configurarAcordeao('toggle-medalhas', 'corpo-medalhas', () => configurarMedalhas());
 })();
 
 function configurarAcordeao(idBotao, idCorpo, aoAbrirPrimeiraVez) {
@@ -479,7 +480,7 @@ async function sortearMembro() {
   if (membrosAtivosQq.length === 0) {
     const { data } = await supabaseClient
       .from('membros')
-      .select('nome_completo, cargo, foto_url')
+      .select('nome_completo, cargo, foto_url, discord_roles')
       .eq('status', 'ativo');
     membrosAtivosQq = data || [];
   }
@@ -492,6 +493,10 @@ async function sortearMembro() {
   document.getElementById('qq-foto').src = foto;
   document.getElementById('qq-nome').textContent = sorteado.nome_completo;
   document.getElementById('qq-cargo').textContent = sorteado.cargo;
+
+  const badgesHtml = await renderizarBadgesDiscord(sorteado.discord_roles, false);
+  document.getElementById('qq-badges').innerHTML = badgesHtml || '<span class="sem-comentarios" style="font-size:0.78rem;">Sem Discord conectado</span>';
+
   document.getElementById('resultado-quemequem').style.display = 'block';
 }
 
@@ -699,4 +704,98 @@ async function carregarRankingProfessores(mesStr) {
       </table>
     </div>
   `;
+}
+
+/* ==================================================================
+   8) GERENCIAR MEDALHAS DO DISCORD (DIRETORIA)
+   ================================================================== */
+
+function configurarMedalhas() {
+  const souDiretoria = meuMembroExtras && CARGOS_DIRETORIA_EXTRAS.includes(meuMembroExtras.cargo);
+
+  if (!souDiretoria) {
+    document.getElementById('medalhas-sem-permissao').style.display = 'block';
+    return;
+  }
+
+  document.getElementById('medalhas-conteudo').style.display = 'block';
+  document.getElementById('btn-salvar-medalha').addEventListener('click', salvarMedalha);
+  carregarListaMedalhas();
+}
+
+async function salvarMedalha() {
+  const erroEl = document.getElementById('erro-medalha');
+  erroEl.style.display = 'none';
+
+  const role_id = document.getElementById('medalha-role-id').value.trim();
+  const nome = document.getElementById('medalha-nome').value.trim();
+  const emoji = document.getElementById('medalha-emoji').value.trim() || '🏅';
+  const cor = document.getElementById('medalha-cor').value.trim() || '#D18A5C';
+  const prioridade = parseInt(document.getElementById('medalha-prioridade').value) || 0;
+
+  if (!role_id || !nome) {
+    erroEl.textContent = 'Preencha pelo menos o ID do cargo e o nome.';
+    erroEl.style.display = 'block';
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from('discord_medalhas')
+    .upsert({ role_id, nome, emoji, cor, prioridade }, { onConflict: 'role_id' });
+
+  if (error) {
+    erroEl.textContent = `Erro ao salvar: ${error.message}`;
+    erroEl.style.display = 'block';
+    return;
+  }
+
+  document.getElementById('medalha-role-id').value = '';
+  document.getElementById('medalha-nome').value = '';
+  document.getElementById('medalha-emoji').value = '';
+  document.getElementById('medalha-cor').value = '#D18A5C';
+  document.getElementById('medalha-prioridade').value = '0';
+
+  medalhasCache = null; // limpa o cache global do discord.js pra recarregar com o dado novo
+  await carregarListaMedalhas();
+}
+
+async function carregarListaMedalhas() {
+  const destino = document.getElementById('lista-medalhas');
+
+  const { data, error } = await supabaseClient
+    .from('discord_medalhas')
+    .select('*')
+    .order('prioridade', { ascending: false });
+
+  if (error) {
+    destino.innerHTML = `<p class="erro">Erro ao carregar (rodou o SQL das medalhas?): ${error.message}</p>`;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    destino.innerHTML = '<p class="sem-comentarios">Nenhuma medalha cadastrada ainda.</p>';
+    return;
+  }
+
+  destino.innerHTML = data.map(m => `
+    <div class="comentario-item" style="align-items:center;">
+      <span class="badge-discord" style="background:${m.cor}22; color:${m.cor}; border:1px solid ${m.cor}55;">
+        ${m.emoji} ${escapeHtmlExtras(m.nome)}
+      </span>
+      <div class="comentario-corpo">
+        <span class="comentario-data">ID: ${escapeHtmlExtras(m.role_id)} · prioridade ${m.prioridade}</span>
+      </div>
+      <button class="btn-apagar-comentario" title="Apagar" onclick="apagarMedalha('${m.id}')">×</button>
+    </div>
+  `).join('');
+}
+
+async function apagarMedalha(id) {
+  const { error } = await supabaseClient.from('discord_medalhas').delete().eq('id', id);
+  if (error) {
+    alert(`Erro ao apagar: ${error.message}`);
+    return;
+  }
+  medalhasCache = null;
+  await carregarListaMedalhas();
 }
