@@ -720,6 +720,7 @@ function configurarMedalhas() {
 
   document.getElementById('medalhas-conteudo').style.display = 'block';
   document.getElementById('btn-salvar-medalha').addEventListener('click', salvarMedalha);
+  document.getElementById('btn-salvar-json-medalhas').addEventListener('click', salvarMedalhasJson);
   carregarListaMedalhas();
 }
 
@@ -772,6 +773,22 @@ async function carregarListaMedalhas() {
     return;
   }
 
+  // mantém o campo JSON sempre espelhando o que tá salvo no banco
+  const textareaJson = document.getElementById('medalhas-json');
+  if (textareaJson) {
+    textareaJson.value = JSON.stringify(
+      (data || []).map(m => ({
+        role_id: m.role_id,
+        nome: m.nome,
+        emoji: m.emoji,
+        cor: m.cor,
+        prioridade: m.prioridade,
+      })),
+      null,
+      2
+    );
+  }
+
   if (!data || data.length === 0) {
     destino.innerHTML = '<p class="sem-comentarios">Nenhuma medalha cadastrada ainda.</p>';
     return;
@@ -788,6 +805,70 @@ async function carregarListaMedalhas() {
       <button class="btn-apagar-comentario" title="Apagar" onclick="apagarMedalha('${m.id}')">×</button>
     </div>
   `).join('');
+}
+
+async function salvarMedalhasJson() {
+  const erroEl = document.getElementById('erro-json-medalhas');
+  erroEl.style.display = 'none';
+
+  let itens;
+  try {
+    itens = JSON.parse(document.getElementById('medalhas-json').value);
+    if (!Array.isArray(itens)) throw new Error('O conteúdo precisa ser uma lista (array) de objetos, entre [ ].');
+  } catch (e) {
+    erroEl.textContent = `JSON inválido: ${e.message}`;
+    erroEl.style.display = 'block';
+    return;
+  }
+
+  for (const item of itens) {
+    if (!item.role_id || !item.nome) {
+      erroEl.textContent = 'Cada item precisa ter pelo menos "role_id" e "nome" preenchidos.';
+      erroEl.style.display = 'block';
+      return;
+    }
+  }
+
+  // descobre quais medalhas existem hoje pra apagar as que saíram do JSON
+  const { data: atuais } = await supabaseClient.from('discord_medalhas').select('role_id');
+  const roleIdsNovos = itens.map(i => String(i.role_id));
+  const roleIdsRemover = (atuais || [])
+    .map(a => a.role_id)
+    .filter(id => !roleIdsNovos.includes(id));
+
+  if (roleIdsRemover.length > 0) {
+    const { error: erroDelete } = await supabaseClient
+      .from('discord_medalhas')
+      .delete()
+      .in('role_id', roleIdsRemover);
+
+    if (erroDelete) {
+      erroEl.textContent = `Erro ao remover medalhas antigas: ${erroDelete.message}`;
+      erroEl.style.display = 'block';
+      return;
+    }
+  }
+
+  const paraSalvar = itens.map(i => ({
+    role_id: String(i.role_id),
+    nome: i.nome,
+    emoji: i.emoji || '🏅',
+    cor: i.cor || '#D18A5C',
+    prioridade: Number(i.prioridade) || 0,
+  }));
+
+  const { error } = await supabaseClient
+    .from('discord_medalhas')
+    .upsert(paraSalvar, { onConflict: 'role_id' });
+
+  if (error) {
+    erroEl.textContent = `Erro ao salvar: ${error.message}`;
+    erroEl.style.display = 'block';
+    return;
+  }
+
+  medalhasCache = null;
+  await carregarListaMedalhas();
 }
 
 async function apagarMedalha(id) {

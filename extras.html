@@ -3,9 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icons/favicon.ico" />
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <title>Deploy - Extras</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -213,7 +210,18 @@
             </p>
 
             <div class="card-form" style="margin-bottom:1.2rem;">
-              <h3>Nova medalha</h3>
+              <h3>Editar tudo via JSON (mais rápido)</h3>
+              <p class="ferramenta-desc" style="margin-top:0;">
+                Edita a lista inteira de uma vez. Cada item precisa ter pelo menos <code>role_id</code> e <code>nome</code>.
+                Ao salvar, essa lista <strong>substitui</strong> a atual (o que sair daqui é apagado do banco).
+              </p>
+              <textarea id="medalhas-json" rows="12" style="font-family:'Courier New', monospace; font-size:0.8rem;"></textarea>
+              <button type="button" id="btn-salvar-json-medalhas" class="btn-primary btn-small" style="width:auto;">Salvar JSON</button>
+              <p id="erro-json-medalhas" class="erro" style="display:none;"></p>
+            </div>
+
+            <div class="card-form" style="margin-bottom:1.2rem;">
+              <h3>Ou adicionar uma de cada vez</h3>
               <label class="label-campo">ID do cargo no Discord</label>
               <input type="text" id="medalha-role-id" placeholder="Ex: 123456789012345678" />
               <label class="label-campo">Nome da medalha</label>

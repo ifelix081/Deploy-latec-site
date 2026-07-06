@@ -2,17 +2,49 @@ const FOTO_PADRAO_COM = 'https://api.dicebear.com/7.x/initials/svg?seed=';
 
 // meuMembroId precisa estar definido globalmente na página que usa esse componente
 
-function toggleComentarios(containerId, entidadeTipo, entidadeId) {
-  const el = document.getElementById(containerId);
-  if (!el) return;
+// Mantém a mesma assinatura de antes (pra não precisar mexer em eventos.js/projetos.js/votacoes.js),
+// só que agora abre modal em vez de expandir inline.
+function toggleComentarios(containerIdAntigo, entidadeTipo, entidadeId) {
+  abrirModalComentarios(entidadeTipo, entidadeId);
+}
 
-  const abrindo = el.style.display === 'none' || el.style.display === '';
-  el.style.display = abrindo ? 'block' : 'none';
+function garantirModalComentarios() {
+  if (document.getElementById('modal-comentarios-overlay')) return;
 
-  if (abrindo && !el.dataset.carregado) {
-    carregarComentarios(entidadeTipo, entidadeId, containerId);
-    el.dataset.carregado = 'true';
-  }
+  const html = `
+    <div id="modal-comentarios-overlay" class="modal-comentarios-overlay"></div>
+    <div id="modal-comentarios-painel" class="modal-comentarios-painel">
+      <div class="modal-comentarios-topo">
+        <h3>Comentários</h3>
+        <button id="modal-comentarios-fechar" class="modal-comentarios-fechar" aria-label="Fechar">×</button>
+      </div>
+      <div id="modal-comentarios-conteudo" class="modal-comentarios-conteudo">
+        <p>Carregando...</p>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', html);
+
+  document.getElementById('modal-comentarios-overlay').addEventListener('click', fecharModalComentarios);
+  document.getElementById('modal-comentarios-fechar').addEventListener('click', fecharModalComentarios);
+}
+
+function fecharModalComentarios() {
+  const overlay = document.getElementById('modal-comentarios-overlay');
+  const painel = document.getElementById('modal-comentarios-painel');
+  if (overlay) overlay.classList.remove('aberto');
+  if (painel) painel.classList.remove('aberto');
+}
+
+async function abrirModalComentarios(entidadeTipo, entidadeId) {
+  garantirModalComentarios();
+
+  document.getElementById('modal-comentarios-overlay').classList.add('aberto');
+  document.getElementById('modal-comentarios-painel').classList.add('aberto');
+  document.getElementById('modal-comentarios-conteudo').innerHTML = '<p>Carregando...</p>';
+
+  await carregarComentarios(entidadeTipo, entidadeId, 'modal-comentarios-conteudo');
 }
 
 async function carregarComentarios(entidadeTipo, entidadeId, containerId) {
@@ -69,12 +101,14 @@ function itemComentario(c, medalhas) {
 
   return `
     <div class="comentario-item">
-      <img src="${foto}" class="avatar-pequeno" alt="" />
+      <img src="${foto}" class="avatar-pequeno" alt="" onerror="this.src='${FOTO_PADRAO_COM}${encodeURIComponent(nomeExibicao)}'" />
       <div class="comentario-corpo">
-        <span class="comentario-autor">${escapeHtmlCom(nomeExibicao)}</span>
-        ${badgeHtml}
-        <span class="comentario-data">${data}</span>
+        <div class="comentario-cabecalho">
+          <span class="comentario-autor">${escapeHtmlCom(nomeExibicao)}</span>
+          ${badgeHtml}
+        </div>
         <p class="comentario-texto">${escapeHtmlCom(c.conteudo)}</p>
+        <span class="comentario-data">${data}</span>
       </div>
       ${podeApagar ? `<button id="apagar-com-${c.id}" class="btn-apagar-comentario" title="Apagar">×</button>` : ''}
     </div>
