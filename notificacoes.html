@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#15171C" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>LATec FICR - Notificações</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app-page">
+
+  <div id="sidebar-placeholder"></div>
+
+  <h1 class="page-title" id="page-title-placeholder"></h1>
+
+  <div class="container">
+
+    <button id="btn-ativar-push" class="btn-secondary btn-small" style="width:auto; margin-bottom:1.4rem;">
+      🔔 Ativar notificações no celular
+    </button>
+
+    <div id="form-novo-aviso" style="display:none;" class="card-form">
+      <h3>Postar aviso</h3>
+      <input type="text" id="aviso-titulo" placeholder="Título" />
+      <textarea id="aviso-mensagem" placeholder="Mensagem" rows="3"></textarea>
+      <button id="btn-criar-aviso" class="btn-primary btn-small" style="width:auto;">Publicar aviso</button>
+      <p id="erro-aviso" class="erro" style="display:none;"></p>
+    </div>
+
+    <div id="lista-avisos">
+      <p>Carregando...</p>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/pwa.js"></script>
+  <script src="js/push.js"></script>
+  <script src="js/notificacoes.js"></script>
+</body>
+</html>

@@ -968,6 +968,141 @@ button.btn-secondary:hover {
   .comentarios-form button {
     width: 100%;
   }
+
+  .dash-hero {
+    padding: 1.8rem 1.4rem;
+    margin-top: 1.3rem;
+  }
+
+  .dash-hero-titulo {
+    font-size: 1.6rem;
+  }
+
+  .resumo-grid-compacto {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
+
+/* ===== Extras: ferramentas em acordeão ===== */
+.ferramentas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.card-ferramenta {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ferramenta-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1rem 1.2rem;
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+}
+
+.ferramenta-titulo {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.ferramenta-seta {
+  color: var(--ink-soft);
+  font-size: 1.2rem;
+}
+
+.ferramenta-corpo {
+  padding: 0 1.2rem 1.3rem;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+
+.ferramenta-desc {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin: 1rem 0 1rem;
+}
+
+.ferramenta-corpo input,
+.ferramenta-corpo select,
+.ferramenta-corpo textarea {
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: var(--surface-2);
+  color: var(--ink);
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+.ferramenta-corpo input:focus,
+.ferramenta-corpo select:focus,
+.ferramenta-corpo textarea:focus {
+  outline: none;
+  border-color: var(--ink-faint);
+}
+
+.ferramenta-corpo input[readonly] {
+  color: var(--ink-soft);
+  cursor: not-allowed;
+}
+
+/* ===== Banner de instalar PWA ===== */
+#pwa-banner-instalar {
+  position: fixed;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: 420px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
+  z-index: 400;
+  font-size: 0.87rem;
+  color: var(--ink);
+}
+
+.pwa-banner-botoes {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
+}
+
+.pwa-banner-botoes button {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.83rem;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+#pwa-btn-instalar {
+  background: var(--accent);
+  color: #1A140F;
+  border: none;
+  font-weight: 600;
+}
+
+#pwa-btn-fechar {
+  background: transparent;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
 }
 
 /* ===== Centralização geral (bloco + conteúdo interno) ===== */
@@ -1107,62 +1242,158 @@ button.btn-secondary:hover {
   }
 }
 
-/* ===== Cards de resumo do Dashboard ===== */
-.resumo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
+/* ===== Dashboard: hero + grid compacto ===== */
+.dash-hero {
+  display: block;
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 2.6rem 2.2rem;
   margin-top: 1.8rem;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.15s ease;
+}
+
+.dash-hero:hover {
+  background: var(--surface-2);
+}
+
+.dash-hero-vazio {
+  cursor: default;
+}
+
+.dash-hero-eyebrow {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.dash-hero-titulo {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 1.15;
+  margin: 0.5rem 0 0.4rem;
+}
+
+.dash-hero-sub {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.resumo-grid-compacto {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.7rem;
+  margin-top: 1.2rem;
   text-align: left;
 }
 
-.card-resumo {
+.card-resumo-compacto {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 1.1rem 1.2rem;
+  padding: 0.8rem 0.9rem;
   text-decoration: none;
   color: var(--ink);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.card-resumo:hover {
+.card-resumo-compacto:hover {
   border-color: var(--ink-faint);
   background: var(--surface-2);
 }
 
-.card-resumo-topo {
+.crc-topo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   color: var(--ink-soft);
 }
 
-.card-resumo-topo svg {
-  width: 16px;
-  height: 16px;
+.crc-topo svg {
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
 }
 
-.card-resumo-label {
-  font-size: 0.76rem;
+.card-resumo-compacto .rotulo {
+  font-size: 0.68rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.card-resumo-numero {
+.card-resumo-compacto .numero {
   font-family: 'Source Serif 4', Georgia, serif;
-  font-size: 1.7rem;
   font-weight: 600;
+  font-size: 1.3rem;
   line-height: 1.1;
 }
 
-.card-resumo-sub {
-  font-size: 0.8rem;
+.card-resumo-compacto .sub {
+  font-size: 0.72rem;
   color: var(--ink-soft);
-  line-height: 1.4;
+  line-height: 1.35;
+}
+
+.dash-widgets-linha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+  text-align: left;
+}
+
+.dash-widget {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+}
+
+.dash-widget-titulo {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+}
+
+.dash-widget-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+
+.dash-widget-item:last-child {
+  border-bottom: none;
+}
+
+.dash-widget-item strong {
+  display: block;
+  font-size: 0.85rem;
+}
+
+.dash-widget-item p {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.dash-widget-item-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 700px) {
+  .dash-widgets-linha {
+    grid-template-columns: 1fr;
+  }
 }

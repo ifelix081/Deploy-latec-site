@@ -9,6 +9,8 @@ const NAV_ITEMS_SIDEBAR = [
   ['selecao.html', 'Processo Seletivo', '<rect x="5" y="3" width="10" height="14.5" rx="1.2"/><rect x="7" y="1.3" width="6" height="3" rx="1"/><path d="M7.5 9h5"/><path d="M7.5 12h5"/>'],
   ['noticias.html', 'Notícias', '<rect x="3" y="4" width="14" height="12" rx="1.2"/><path d="M6 8h8"/><path d="M6 11h8"/><path d="M6 14h5"/>'],
   ['documentos.html', 'Documentos', '<path d="M6 2.5h6l3 3v11a1 1 0 01-1 1H6a1 1 0 01-1-1v-13a1 1 0 011-1z"/><path d="M12 2.5v3.5h3.5"/><path d="M7 11h6"/><path d="M7 14h6"/>'],
+  ['extras.html', 'Extras', '<rect x="3" y="3" width="6" height="6" rx="1"/><rect x="11" y="3" width="6" height="6" rx="1"/><rect x="3" y="11" width="6" height="6" rx="1"/><path d="M13.5 11v6M11 14h5"/>'],
+  ['notificacoes.html', 'Notificações', '<path d="M10 2.5c-2.2 0-4 1.9-4 4.3v2.4c0 .7-.3 1.5-.8 2.1l-.9 1c-.5.6-.1 1.5.6 1.5h10.2c.7 0 1.1-.9.6-1.5l-.9-1c-.5-.6-.8-1.4-.8-2.1V6.8c0-2.4-1.8-4.3-4-4.3z"/><path d="M8.3 15.5a1.8 1.8 0 003.4 0"/>'],
 ];
 
 const ICONE_SAIR_SIDEBAR = '<path d="M8 3.5H4.5a1 1 0 00-1 1v11a1 1 0 001 1H8"/><path d="M13 14l4-4-4-4"/><path d="M17 10H7.5"/>';

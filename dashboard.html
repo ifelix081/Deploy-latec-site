@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#15171C" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <title>LATec FICR - Painel</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -15,7 +18,22 @@
   <div class="container">
     <p id="boas-vindas">Carregando...</p>
 
-    <div id="resumo-dashboard" class="resumo-grid">
+    <div id="hero-dashboard">
+      <p>Carregando...</p>
+    </div>
+
+    <div class="dash-widgets-linha">
+      <div class="dash-widget">
+        <h3 class="dash-widget-titulo">📢 Avisos recentes</h3>
+        <div id="widget-avisos"><p class="sem-comentarios">Carregando...</p></div>
+      </div>
+      <div class="dash-widget">
+        <h3 class="dash-widget-titulo">⭐ Professores mais bem avaliados (mês)</h3>
+        <div id="widget-rank-prof"><p class="sem-comentarios">Carregando...</p></div>
+      </div>
+    </div>
+
+    <div id="resumo-dashboard" class="resumo-grid-compacto">
       <p>Carregando resumo...</p>
     </div>
   </div>
@@ -24,6 +42,7 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/sidebar.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/pwa.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LATec FICR - Extras</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app-page">
+
+  <div id="sidebar-placeholder"></div>
+
+  <h1 class="page-title" id="page-title-placeholder"></h1>
+
+  <div class="container">
+    <p class="aviso" style="margin-bottom:1.6rem;">
+      Ferramentas extras, não essenciais pro dia a dia da Liga — só pra facilitar a vida.
+    </p>
+
+    <div class="ferramentas-lista">
+
+      <!-- ===== Gerador de Currículo ===== -->
+      <div class="card-ferramenta">
+        <button class="ferramenta-toggle" id="toggle-curriculo">
+          <span class="ferramenta-titulo">📄 Gerador de Currículo</span>
+          <span class="ferramenta-seta">›</span>
+        </button>
+        <div class="ferramenta-corpo" id="corpo-curriculo" style="display:none;">
+          <p class="ferramenta-desc">Já vem com seus dados da Liga preenchidos. Complete o resto e gere o PDF.</p>
+          <div id="curriculo-carregando"><p>Carregando seus dados...</p></div>
+          <form id="form-curriculo" style="display:none;">
+            <label class="label-campo">Nome completo</label>
+            <input type="text" id="cv-nome" />
+            <label class="label-campo">Cargo atual (LATec FICR)</label>
+            <input type="text" id="cv-cargo" readonly />
+            <label class="label-campo">Email</label>
+            <input type="text" id="cv-email" />
+            <label class="label-campo">Telefone / WhatsApp (opcional)</label>
+            <input type="text" id="cv-telefone" placeholder="(81) 9xxxx-xxxx" />
+            <label class="label-campo">LinkedIn / Portfólio (opcional)</label>
+            <input type="text" id="cv-linkedin" placeholder="linkedin.com/in/seu-usuario" />
+            <label class="label-campo">Resumo profissional (opcional)</label>
+            <textarea id="cv-resumo" rows="3" placeholder="Uma ou duas frases sobre você..."></textarea>
+            <label class="label-campo">Formação acadêmica</label>
+            <textarea id="cv-formacao" rows="2" placeholder="Ex: Ciência da Computação — FICR (2023 - atual)"></textarea>
+            <div id="bloco-projetos-cv">
+              <label class="label-campo">Projetos que você lidera na LATec FICR (auto-detectado)</label>
+              <div id="lista-projetos-cv"><p class="sem-comentarios">Nenhum projeto liderado encontrado.</p></div>
+            </div>
+            <div id="bloco-eventos-cv" style="margin-top:0.9rem;">
+              <label class="label-campo">Eventos que você participou (auto-detectado)</label>
+              <div id="lista-eventos-cv"><p class="sem-comentarios">Nenhuma presença confirmada encontrada.</p></div>
+            </div>
+            <label class="label-campo" style="margin-top:0.9rem;">Experiências extras (opcional, uma por linha)</label>
+            <textarea id="cv-experiencias-extra" rows="3" placeholder="Ex: Estágio em TI — Empresa X (2024)"></textarea>
+            <label class="label-campo">Habilidades (opcional, separadas por vírgula)</label>
+            <input type="text" id="cv-habilidades" placeholder="Ex: Python, React, Figma, Oratória" />
+            <label class="label-campo">Idiomas (opcional)</label>
+            <input type="text" id="cv-idiomas" placeholder="Ex: Inglês avançado, Espanhol intermediário" />
+            <button type="button" id="btn-gerar-curriculo" class="btn-primary btn-small" style="margin-top:1rem;">Gerar currículo em PDF</button>
+            <p id="erro-curriculo" class="erro" style="display:none;"></p>
+          </form>
+        </div>
+      </div>
+
+      <!-- ===== Gerador de Post ===== -->
+      <div class="card-ferramenta">
+        <button class="ferramenta-toggle" id="toggle-post">
+          <span class="ferramenta-titulo">📣 Gerador de Post (Insta/LinkedIn)</span>
+          <span class="ferramenta-seta">›</span>
+        </button>
+        <div class="ferramenta-corpo" id="corpo-post" style="display:none;">
+          <p class="ferramenta-desc">Monta um texto pronto pra copiar e colar, com base num evento ou projeto.</p>
+          <label class="label-campo">O que você quer divulgar?</label>
+          <select id="post-tipo">
+            <option value="evento">Evento</option>
+            <option value="projeto">Projeto</option>
+          </select>
+          <label class="label-campo">Qual?</label>
+          <select id="post-item"><option value="">Carregando...</option></select>
+          <label class="label-campo">Tom do texto</label>
+          <select id="post-tom">
+            <option value="empolgado">Empolgado 🎉</option>
+            <option value="formal">Formal</option>
+            <option value="convite">Convite (call to action)</option>
+          </select>
+          <button type="button" id="btn-gerar-post" class="btn-primary btn-small" style="margin-top:0.8rem;">Gerar texto</button>
+          <p id="erro-post" class="erro" style="display:none;"></p>
+          <div id="resultado-post" style="display:none; margin-top:1rem;">
+            <textarea id="post-texto-gerado" rows="6" readonly></textarea>
+            <button type="button" id="btn-copiar-post" class="btn-secondary btn-small" style="margin-top:0.5rem; width:auto;">Copiar texto</button>
+            <p id="post-copiado-msg" style="display:none; color:var(--success); font-size:0.83rem; margin-top:0.4rem;">Copiado!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Export de dados ===== -->
+      <div class="card-ferramenta">
+        <button class="ferramenta-toggle" id="toggle-export">
+          <span class="ferramenta-titulo">📦 Exportar meus dados</span>
+          <span class="ferramenta-seta">›</span>
+        </button>
+        <div class="ferramenta-corpo" id="corpo-export" style="display:none;">
+          <p class="ferramenta-desc">Baixe um PDF com tudo que a Liga tem registrado sobre você: cadastro, projetos, eventos e comentários.</p>
+          <button type="button" id="btn-exportar-dados" class="btn-primary btn-small" style="width:auto;">Baixar meus dados (PDF)</button>
+          <p id="erro-export" class="erro" style="display:none;"></p>
+        </div>
+      </div>
+
+      <!-- ===== Gerador de Pauta (Diretoria) ===== -->
+      <div class="card-ferramenta">
+        <button class="ferramenta-toggle" id="toggle-pauta">
+          <span class="ferramenta-titulo">🗒️ Gerador de Pauta (Diretoria)</span>
+          <span class="ferramenta-seta">›</span>
+        </button>
+        <div class="ferramenta-corpo" id="corpo-pauta" style="display:none;">
+          <p id="pauta-sem-permissao" class="aviso" style="display:none;">Só a Diretoria (Presidente, Co-Presidente, Secretário) pode gerar pauta de reunião.</p>
+          <div id="pauta-conteudo" style="display:none;">
+            <p class="ferramenta-desc">Monta automaticamente com votações abertas, projetos parados e o próximo evento.</p>
+            <label class="label-campo">Data da reunião</label>
+            <input type="date" id="pauta-data" />
+            <label class="label-campo">Itens extras (opcional, um por linha)</label>
+            <textarea id="pauta-extra" rows="3" placeholder="Ex: Discutir orçamento do evento X"></textarea>
+            <button type="button" id="btn-gerar-pauta" class="btn-primary btn-small" style="margin-top:0.8rem; width:auto;">Gerar pauta em PDF</button>
+            <p id="erro-pauta" class="erro" style="display:none;"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Quem é quem ===== -->
+      <div class="card-ferramenta">
+        <button class="ferramenta-toggle" id="toggle-quemequem">
+          <span class="ferramenta-titulo">🎲 Quem é quem</span>
+          <span class="ferramenta-seta">›</span>
+        </button>
+        <div class="ferramenta-corpo" id="corpo-quemequem" style="display:none;">
+          <p class="ferramenta-desc">Sorteia um membro ativo aleatório. Bom pra quebrar o gelo em reunião.</p>
+          <button type="button" id="btn-sortear-membro" class="btn-primary btn-small" style="width:auto;">Sortear</button>
+          <div id="resultado-quemequem" style="display:none; margin-top:1rem;" class="card-evento">
+            <img id="qq-foto" class="avatar-grande" alt="" style="margin-bottom:0.8rem;" />
+            <div class="card-evento-header">
+              <strong id="qq-nome"></strong>
+              <span class="badge badge-tipo" id="qq-cargo"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Ranking de Participação ===== -->
+      <div class="card-ferramenta">
+        <button class="ferramenta-toggle" id="toggle-ranking-presenca">
+          <span class="ferramenta-titulo">🏆 Ranking de Participação</span>
+          <span class="ferramenta-seta">›</span>
+        </button>
+        <div class="ferramenta-corpo" id="corpo-ranking-presenca" style="display:none;">
+          <p class="ferramenta-desc">Quem mais confirmou presença em eventos (histórico completo).</p>
+          <div id="lista-ranking-presenca"><p>Carregando...</p></div>
+        </div>
+      </div>
+
+      <!-- ===== Ranking de Professores (mensal) ===== -->
+      <div class="card-ferramenta">
+        <button class="ferramenta-toggle" id="toggle-ranking-prof">
+          <span class="ferramenta-titulo">⭐ Ranking de Professores (mensal)</span>
+          <span class="ferramenta-seta">›</span>
+        </button>
+        <div class="ferramenta-corpo" id="corpo-ranking-prof" style="display:none;">
+          <p class="ferramenta-desc">Avalie um professor e veja o ranking do mês.</p>
+
+          <div class="card-form" style="margin-bottom:1.2rem;">
+            <h3>Avaliar professor</h3>
+            <label class="label-campo">Professor</label>
+            <select id="prof-select"><option value="">Carregando...</option></select>
+            <p style="font-size:0.8rem; color:var(--ink-soft); margin:0.3rem 0 0.6rem;">
+              Não achou? <button type="button" id="btn-add-professor" class="comentarios-toggle" style="display:inline;">cadastrar novo</button>
+            </p>
+            <div id="novo-professor-form" style="display:none; margin-bottom:0.7rem;">
+              <input type="text" id="prof-novo-nome" placeholder="Nome do professor" />
+              <button type="button" id="btn-salvar-professor" class="btn-secondary btn-small" style="width:auto;">Salvar professor</button>
+            </div>
+            <label class="label-campo">Nota</label>
+            <div class="avaliacao-estrelas" id="prof-estrelas">
+              <span class="estrela" data-valor="1">★</span><span class="estrela" data-valor="2">★</span><span class="estrela" data-valor="3">★</span><span class="estrela" data-valor="4">★</span><span class="estrela" data-valor="5">★</span>
+            </div>
+            <button type="button" id="btn-avaliar-professor" class="btn-primary btn-small" style="margin-top:0.8rem; width:auto;">Enviar avaliação</button>
+            <p id="msg-avaliacao-prof" style="display:none; font-size:0.83rem; margin-top:0.5rem;"></p>
+          </div>
+
+          <label class="label-campo">Ver ranking de:</label>
+          <input type="month" id="prof-ranking-mes" />
+          <div id="lista-ranking-prof" style="margin-top:0.8rem;"><p>Carregando...</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/sidebar.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/extras.js"></script>
+</body>
+</html>
