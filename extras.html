@@ -154,8 +154,20 @@
           <span class="ferramenta-seta">›</span>
         </button>
         <div class="ferramenta-corpo" id="corpo-ranking-presenca" style="display:none;">
-          <p class="ferramenta-desc">Quem mais confirmou presença em eventos (histórico completo).</p>
-          <div id="lista-ranking-presenca"><p>Carregando...</p></div>
+          <p class="ferramenta-desc">Quem mais confirmou presença em eventos.</p>
+
+          <label class="label-campo">Ver:</label>
+          <select id="ranking-presenca-modo">
+            <option value="total">Histórico completo</option>
+            <option value="mensal">Um mês específico</option>
+          </select>
+
+          <div id="ranking-presenca-mes-wrap" style="display:none;">
+            <label class="label-campo">Mês:</label>
+            <input type="month" id="ranking-presenca-mes" />
+          </div>
+
+          <div id="lista-ranking-presenca" style="margin-top:0.8rem;"><p>Carregando...</p></div>
         </div>
       </div>
 
@@ -208,6 +220,16 @@
               Pra pegar o ID do cargo: Configurações do Discord → Avançado → ative o Modo Desenvolvedor,
               depois clique com botão direito no cargo (nas configurações do servidor) → Copiar ID.
             </p>
+
+            <div class="card-form" style="margin-bottom:1.2rem;">
+              <h3>🔄 Sincronizar com o Discord</h3>
+              <p class="ferramenta-desc" style="margin-top:0;">
+                Renova os cargos de todo mundo que já conectou a conta (usa o acesso que cada um autorizou).
+                Quem saiu do servidor ou revogou o acesso tem os cargos zerados automaticamente.
+              </p>
+              <button type="button" id="btn-sincronizar-todos-discord" class="btn-primary btn-small" style="width:auto;">Recarregar cargos de todo mundo</button>
+              <p id="msg-sincronizar-discord" style="display:none; font-size:0.83rem; margin-top:0.6rem;"></p>
+            </div>
 
             <div class="card-form" style="margin-bottom:1.2rem;">
               <h3>Editar tudo via JSON (mais rápido)</h3>

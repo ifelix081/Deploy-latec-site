@@ -2,9 +2,11 @@
 const DISCORD_CLIENT_ID = '1523596355845619794';
 
 // Mesma URL do seu projeto Supabase, só trocando /rest ou nada por /functions/v1
-// Ex: se seu supabase-config.js usa 'https://vhzpwxaolisqdbakslna.supabase.co', cole igual aqui + /functions/v1
 const SUPABASE_FUNCTIONS_URL = 'https://vhzpwxaolisqdbakslna.supabase.co/functions/v1';
-const DISCORD_ANON_KEY = 'sb_publishable_1PMiP_GWMoo6u26n8rMwXA_ZQ2n-zY5';
+
+// Mesma anon key que você usa no supabase-config.js (createClient(url, ESSA_KEY_AQUI))
+const DISCORD_ANON_KEY = 'COLOQUE_SUA_ANON_KEY_AQUI';
+
 let medalhasCache = null; // { role_id: {nome, emoji, cor, prioridade} }
 
 function urlRedirectDiscord() {
@@ -33,15 +35,15 @@ async function processarCallbackDiscord() {
 
   const { data: { session } } = await supabaseClient.auth.getSession();
 
- const resposta = await fetch(`${SUPABASE_FUNCTIONS_URL}/conectar-discord`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    apikey: DISCORD_ANON_KEY,
-    Authorization: `Bearer ${session.access_token}`,
-  },
-  body: JSON.stringify({ code, redirect_uri: urlRedirectDiscord() }),
-});
+  const resposta = await fetch(`${SUPABASE_FUNCTIONS_URL}/conectar-discord`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: DISCORD_ANON_KEY,
+      Authorization: `Bearer ${session.access_token}`,
+    },
+    body: JSON.stringify({ code, redirect_uri: urlRedirectDiscord() }),
+  });
 
   const resultado = await resposta.json();
 
@@ -96,4 +98,29 @@ function escapeHtmlBadge(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
+}
+
+// Chama a function que renova o token no Discord e re-busca os cargos.
+// escopo: 'proprio' (só você) ou 'todos' (só funciona se você for Diretoria)
+async function sincronizarCargosDiscord(escopo = 'proprio') {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  const resposta = await fetch(`${SUPABASE_FUNCTIONS_URL}/sincronizar-discord`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: DISCORD_ANON_KEY,
+      Authorization: `Bearer ${session.access_token}`,
+    },
+    body: JSON.stringify({ escopo }),
+  });
+
+  const resultado = await resposta.json();
+
+  if (!resposta.ok) {
+    throw new Error(resultado.erro || 'Erro desconhecido ao sincronizar.');
+  }
+
+  medalhasCache = null; // força recarregar medalhas na próxima renderização
+  return resultado;
 }

@@ -27,7 +27,7 @@ let notaProfessorSelecionada = 0;
   configurarAcordeao('toggle-export', 'corpo-export', () => configurarExport());
   configurarAcordeao('toggle-pauta', 'corpo-pauta', () => configurarPauta());
   configurarAcordeao('toggle-quemequem', 'corpo-quemequem', () => configurarQuemEQuem());
-  configurarAcordeao('toggle-ranking-presenca', 'corpo-ranking-presenca', () => carregarRankingPresenca());
+  configurarAcordeao('toggle-ranking-presenca', 'corpo-ranking-presenca', () => configurarRankingPresenca());
   configurarAcordeao('toggle-ranking-prof', 'corpo-ranking-prof', () => configurarRankingProfessores());
   configurarAcordeao('toggle-medalhas', 'corpo-medalhas', () => configurarMedalhas());
 })();
@@ -504,12 +504,30 @@ async function sortearMembro() {
    6) RANKING DE PARTICIPAÇÃO
    ================================================================== */
 
-async function carregarRankingPresenca() {
+function configurarRankingPresenca() {
+  const select = document.getElementById('ranking-presenca-modo');
+  const mesWrap = document.getElementById('ranking-presenca-mes-wrap');
+  const inputMes = document.getElementById('ranking-presenca-mes');
+
+  const hoje = new Date();
+  inputMes.value = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}`;
+
+  select.addEventListener('change', () => {
+    mesWrap.style.display = select.value === 'mensal' ? 'block' : 'none';
+    carregarRankingPresenca(select.value, inputMes.value);
+  });
+
+  inputMes.addEventListener('change', () => carregarRankingPresenca('mensal', inputMes.value));
+
+  carregarRankingPresenca('total', inputMes.value);
+}
+
+async function carregarRankingPresenca(modo, mesStr) {
   const destino = document.getElementById('lista-ranking-presenca');
 
   const { data, error } = await supabaseClient
     .from('presencas')
-    .select('membro_id, membros(nome_completo)')
+    .select('membro_id, membros(nome_completo), eventos(data_hora)')
     .eq('presente', true);
 
   if (error || !data) {
@@ -517,8 +535,19 @@ async function carregarRankingPresenca() {
     return;
   }
 
+  let registros = data;
+
+  if (modo === 'mensal' && mesStr) {
+    const [ano, mes] = mesStr.split('-').map(Number);
+    registros = data.filter(p => {
+      if (!p.eventos || !p.eventos.data_hora) return false;
+      const d = new Date(p.eventos.data_hora);
+      return d.getFullYear() === ano && d.getMonth() + 1 === mes;
+    });
+  }
+
   const contagem = {};
-  data.forEach(p => {
+  registros.forEach(p => {
     if (!p.membros) return;
     const chave = p.membro_id;
     if (!contagem[chave]) contagem[chave] = { nome: p.membros.nome_completo, total: 0 };
@@ -528,7 +557,9 @@ async function carregarRankingPresenca() {
   const ranking = Object.values(contagem).sort((a, b) => b.total - a.total).slice(0, 10);
 
   if (ranking.length === 0) {
-    destino.innerHTML = '<p class="sem-comentarios">Nenhuma presença registrada ainda.</p>';
+    destino.innerHTML = modo === 'mensal'
+      ? '<p class="sem-comentarios">Nenhuma presença registrada nesse mês.</p>'
+      : '<p class="sem-comentarios">Nenhuma presença registrada ainda.</p>';
     return;
   }
 
@@ -721,7 +752,31 @@ function configurarMedalhas() {
   document.getElementById('medalhas-conteudo').style.display = 'block';
   document.getElementById('btn-salvar-medalha').addEventListener('click', salvarMedalha);
   document.getElementById('btn-salvar-json-medalhas').addEventListener('click', salvarMedalhasJson);
+  document.getElementById('btn-sincronizar-todos-discord').addEventListener('click', sincronizarTodosDiscord);
   carregarListaMedalhas();
+}
+
+async function sincronizarTodosDiscord() {
+  const btn = document.getElementById('btn-sincronizar-todos-discord');
+  const msgEl = document.getElementById('msg-sincronizar-discord');
+  msgEl.style.display = 'none';
+
+  btn.disabled = true;
+  btn.textContent = 'Sincronizando...';
+
+  try {
+    const resultado = await sincronizarCargosDiscord('todos');
+    msgEl.style.color = 'var(--success)';
+    msgEl.textContent = `Pronto! ${resultado.atualizados} de ${resultado.total} membro(s) atualizado(s)${resultado.falharam > 0 ? ` (${resultado.falharam} falharam — provavelmente saíram do servidor ou revogaram acesso)` : ''}.`;
+    msgEl.style.display = 'block';
+  } catch (e) {
+    msgEl.style.color = 'var(--danger)';
+    msgEl.textContent = `Erro: ${e.message}`;
+    msgEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Recarregar cargos de todo mundo';
+  }
 }
 
 async function salvarMedalha() {
